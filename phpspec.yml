@@ -1,0 +1,4 @@
+suites:
+  main:
+    namespace: KK
+    psr4_prefix: KK

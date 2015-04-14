@@ -1,5 +1,10 @@
 {
-    "require": {
-        "phpspec/phpspec": "~2.1"
+  "require": {
+    "phpspec/phpspec": "~2.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "KK\\": "src/"
     }
+  }
 }
