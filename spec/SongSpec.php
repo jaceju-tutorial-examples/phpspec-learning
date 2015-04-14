@@ -17,4 +17,9 @@ class SongSpec extends ObjectBehavior
         $this->setStars(5);
         $this->getStars()->shouldBe(5);
     }
+
+    function its_stars_should_be_not_exceed_five()
+    {
+        $this->shouldThrow('InvalidArgumentException')->duringSetStars(8);
+    }
 }

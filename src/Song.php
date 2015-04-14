@@ -2,12 +2,18 @@
 
 namespace KK;
 
+use InvalidArgumentException;
+
 class Song
 {
     protected $stars;
 
     public function setStars($stars)
     {
+        if ($stars > 5) {
+            throw new InvalidArgumentException;
+        }
+
         $this->stars = $stars;
     }
 
