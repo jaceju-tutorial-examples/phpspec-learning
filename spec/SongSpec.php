@@ -7,9 +7,9 @@ use Prophecy\Argument;
 
 class SongSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    function let()
     {
-        $this->beAnInstanceOf('KK\Song');
+        $this->beConstructedWith('La la la');
     }
 
     function it_can_be_stared()
@@ -27,5 +27,10 @@ class SongSpec extends ObjectBehavior
     {
         $this->listen();
         $this->shouldBeWatched();
+    }
+
+    function it_can_fetch_the_title_of_the_song()
+    {
+        $this->getTitle()->shouldBe('La la la');
     }
 }

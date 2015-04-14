@@ -8,6 +8,12 @@ class Song
 {
     protected $stars;
     protected $listened = false;
+    protected $title;
+
+    public function __construct($title)
+    {
+        $this->title = $title;
+    }
 
     public function setStars($stars)
     {
@@ -36,5 +42,10 @@ class Song
     public function isWatched()
     {
         return $this->listened;
+    }
+
+    public function getTitle()
+    {
+        return $this->title;
     }
 }
