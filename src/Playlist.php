@@ -21,4 +21,11 @@ class Playlist implements Countable
     {
         return count($this->songs);
     }
+
+    public function markAllAsListened()
+    {
+        foreach ($this->songs as $song) {
+            $song->listen();
+        }
+    }
 }

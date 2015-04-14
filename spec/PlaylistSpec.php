@@ -24,4 +24,13 @@ class PlaylistSpec extends ObjectBehavior
         $this->add([$song1, $song2]);
         $this->shouldHaveCount(2);
     }
+
+    function it_can_mark_all_songs_as_listened(Song $song1, Song $song2)
+    {
+        $song1->listen()->shouldBeCalled();
+        $song2->listen()->shouldBeCalled();
+
+        $this->add([$song1, $song2]);
+        $this->markAllAsListened();
+    }
 }
