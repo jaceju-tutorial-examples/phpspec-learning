@@ -10,9 +10,7 @@ class Song
 
     public function setStars($stars)
     {
-        if ($stars > 5) {
-            throw new InvalidArgumentException;
-        }
+        $this->validateStarAmount($stars);
 
         $this->stars = $stars;
     }
@@ -24,5 +22,12 @@ class Song
 
     public function listen()
     {
+    }
+
+    protected function validateStarAmount($stars)
+    {
+        if ($stars > 5) {
+            throw new InvalidArgumentException;
+        }
     }
 }
