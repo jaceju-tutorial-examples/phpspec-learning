@@ -18,4 +18,10 @@ class PlaylistSpec extends ObjectBehavior
         $this->add($song);
         $this->shouldHaveCount(1);
     }
+
+    function it_can_accept_multiple_songs_to_add_at_once(Song $song1, Song $song2)
+    {
+        $this->add([$song1, $song2]);
+        $this->shouldHaveCount(2);
+    }
 }

@@ -10,6 +10,10 @@ class Playlist implements Countable
 
     public function add($song)
     {
+        if (is_array($song)) {
+            return array_map([$this, 'add'], $song);
+        }
+
         $this->songs[] = $song;
     }
 
