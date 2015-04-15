@@ -1,5 +1,11 @@
 # PhpSpec Learning
 
+* 如何開發 Composer-based library ？
+* 如何從預期的結果往回推出程式碼？
+* 如何用更語義化的方式撰寫測試？
+
+## 初始化專案
+
 ```bash
 composer require phpspec/phpspec
 ```
@@ -8,7 +14,7 @@ composer require phpspec/phpspec
 alias t=./vendor/bin/phpspec
 ```
 
-[edit] `phpspec.yml`
+編輯 `phpspec.yml`
 
 ```yaml
 suites:
@@ -17,7 +23,7 @@ suites:
     psr4_prefix: KK
 ```
 
-[edit] `composer.json`
+編輯 `composer.json`
 
 ```json
   "autoload": {
@@ -28,10 +34,30 @@ suites:
 ```
 
 ```bash
-composer dump-autoload
+composer dump
 ```
 
-## Create specs of Playlist
+## 範例說明
+
+主角：
+
+* 播放清單 (Playlist)
+* 歌曲 (Song)
+
+播放清單規格：
+
+* 可以加入單首歌曲
+* 可以一次加入多首歌曲
+* 可以將清單內所有歌曲設定為已播放
+
+歌曲規格：
+
+* 可以加星
+* 不可加超過 5 的星
+* 可以被設定為已播放
+* 可以取得歌曲名稱
+
+## 建立播放清單規格類別
 
 ```bash
 t desc KK/Playlist
@@ -45,9 +71,11 @@ t run
 Do you want me to create `KK\Playlist` for you? (y)
 ```
 
-### First spec of Playlist
+* PhpSpec 會自動幫我們建立對應的檔案
 
-[edit] `spec/PlaylistSpec.php`
+### 規格一：可以加入單首歌曲
+
+編輯 `spec/PlaylistSpec.php`
 
 ```php
 use KK\Song;
@@ -59,6 +87,9 @@ use KK\Song;
     }
 ```
 
+* 用 Double 來隔離 `Song` 類別，因為我們還沒實作
+* PhpSpec 會自動注入 Double 物件
+
 ```bash
 t run
 ```
@@ -67,7 +98,9 @@ t run
 Class spec\KK\Song does not exist
 ```
 
-[edit] `src/Song.php`
+* PhpSpec 無法自動生成 Double 物件的類別
+
+編輯 `src/Song.php`
 
 ```php
 namespace KK;
@@ -85,11 +118,15 @@ t run
 Do you want me to create `KK\Playlist::add()` for you? (y)
 ```
 
+* PhpSpec 會自動幫我們建立對應的方法
+
 ```
 Do you want me to create `KK\Playlist::hasCount()` for you? (n)
 ```
 
-[edit] `src/Playlist.php`
+* `Playlist` 類別要實作 `Countable` 介面，所以不新增 `hasCount` 方法
+
+編輯 `src/Playlist.php`
 
 ```php
 namespace KK;
@@ -112,13 +149,15 @@ class Playlist implements Countable
 }
 ```
 
+* `Playlist` 內部用陣列來存放新增的歌曲
+
 ```bash
 t run
 ```
 
-### Second spec of Playlist
+### 規格二：可以一次加入多首歌曲
 
-[edit] `spec/PlaylistSpec.php`
+編輯 `spec/PlaylistSpec.php`
 
 ```php
     function it_can_accept_multiple_songs_to_add_at_once(Song $song1, Song $song2)
@@ -132,7 +171,7 @@ t run
 t run
 ```
 
-[edit] `src/Playlist.php`
+編輯 `src/Playlist.php`
 
 ```php
     public function add($song)
@@ -145,13 +184,15 @@ t run
     }
 ```
 
+* 利用 `array_map` 與 callback 來實作
+
 ```bash
 t run
 ```
 
-## Introduce mock object
+## 引入 Mock 物件
 
-[edit] `spec/PlaylistSpec.php`
+編輯 `spec/PlaylistSpec.php`
 
 ```php
     function it_can_mark_all_songs_as_played(Song $song1, Song $song2)
@@ -164,6 +205,8 @@ t run
     }
 ```
 
+* Double 物件被預期某方法可能會被呼叫時，就是 Mock 物件
+
 ```bash
 t run
 ```
@@ -172,7 +215,9 @@ t run
 method `Double\KK\Song\P4::play()` is not defined.
 ```
 
-[edit] `src/Song.php`
+* PhpSpec 無法自動建立 Mock 物件的方法
+
+編輯 `src/Song.php`
 
 ```php
     public function play()
@@ -188,7 +233,9 @@ t run
 Do you want me to create `KK\Playlist::markAllAsPlayed()` for you? (y)
 ```
 
-[edit] `src/Playlist.php`
+* Mock 物件沒有錯誤提示後， PhpSpec 就會繼續原來的自動建立測試對象方法的流程
+
+編輯 `src/Playlist.php`
 
 ```php
     public function markAllAsPlayed()
@@ -203,13 +250,17 @@ Do you want me to create `KK\Playlist::markAllAsPlayed()` for you? (y)
 t run
 ```
 
-## Create specs of Song
+## 建立歌曲規格類別
 
 ```
 t desc KK/Song
 ```
 
-[edit] `spec/SongSpec.php`
+* 因為 `Song` 類別已經建立， PhpSpec 就不會問了
+
+### 規格一：可以加星
+
+編輯 `spec/SongSpec.php`
 
 ```php
     function it_can_be_stared()
@@ -231,7 +282,7 @@ Do you want me to create `KK\Song::setStars()` for you? (y)
 Do you want me to create `KK\Song::getStars()` for you? (y)
 ```
 
-[edit] `src/Song.php`
+編輯 `src/Song.php`
 
 ```php
 
@@ -255,9 +306,11 @@ class Song
 }
 ```
 
-### Spec for set invalid amount of stars
+* 加星功能即簡單的 setter / getter
 
-[edit] `spec/SongSpec.php`
+### 規格二：不可加超過 5 的星
+
+編輯 `spec/SongSpec.php`
 
 ```
     function its_stars_should_be_not_exceed_five()
@@ -266,11 +319,13 @@ class Song
     }
 ```
 
+* 當星數超過 5 的時候就要丟出異常
+
 ```bash
 t run
 ```
 
-[edit] `src/Song.php`
+編輯 `src/Song.php`
 
 ```php
     public function setStars($stars)
@@ -283,9 +338,13 @@ t run
     }
 ```
 
-### Refactoring
+```bash
+t run
+```
 
-[edit] `src/Song.php`
+### 重構
+
+編輯 `src/Song.php`
 
 ```php
     public function setStars($stars)
@@ -303,9 +362,15 @@ t run
     }
 ```
 
-## Spec of Song::play()
+* 讓程式碼具有可讀性
 
-[edit] `spec/SongSpec.php`
+```bash
+t run
+```
+
+## 規格三：可以被設定為已播放
+
+編輯 `spec/SongSpec.php`
 
 ```php
     function it_can_be_marked_as_played()
@@ -323,7 +388,7 @@ t run
 Do you want me to create `KK\Song::isPlayed()` for you?
 ```
 
-[edit] `src/Song.php`
+編輯 `src/Song.php`
 
 ```php
     protected $played = false;
@@ -339,9 +404,9 @@ Do you want me to create `KK\Song::isPlayed()` for you?
     }
 ```
 
-## Pass argument to constructor in spec
+## 規格四：可以取得歌曲名稱
 
-[edit] `spec/SongSpec.php`
+編輯 `spec/SongSpec.php`
 
 ```php
     function it_can_fetch_the_name_of_the_song()
@@ -349,6 +414,8 @@ Do you want me to create `KK\Song::isPlayed()` for you?
         $this->getName()->shouldBe('La la la');
     }
 ```
+
+* 不使用 getter ，改用 constructor
 
 ```bash
 t run
@@ -358,7 +425,7 @@ t run
 Do you want me to create `KK\Song::__construct()` for you? (y)
 ```
 
-[edit] `src/Song.php`
+編輯 `src/Song.php`
 
 ```php
     protected $name;
@@ -378,7 +445,7 @@ Do you want me to create `KK\Song::__construct()` for you? (y)
 t run
 ```
 
-[edit] `spec/SongSpec.php`
+編輯 `spec/SongSpec.php`
 
 ```
     function let()
@@ -386,6 +453,9 @@ t run
         $this->beConstructedWith('La la la');
     }
 ```
+
+* `let` 方法會在 spec 類別的每個測試執行前被呼叫
+* 在 `let` 方法中用 `beConstructedWith` 來注入參數
 
 ```bash
 t run
