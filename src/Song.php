@@ -7,7 +7,7 @@ use InvalidArgumentException;
 class Song
 {
     protected $stars;
-    protected $listened = false;
+    protected $played = false;
     protected $name;
 
     public function __construct($title)
@@ -27,9 +27,9 @@ class Song
         return $this->stars;
     }
 
-    public function listen()
+    public function play()
     {
-        $this->listened = true;
+        $this->played = true;
     }
 
     protected function validateStarAmount($stars)
@@ -39,9 +39,9 @@ class Song
         }
     }
 
-    public function isWatched()
+    public function isPlayed()
     {
-        return $this->listened;
+        return $this->played;
     }
 
     public function getName()

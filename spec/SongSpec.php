@@ -23,10 +23,10 @@ class SongSpec extends ObjectBehavior
         $this->shouldThrow('InvalidArgumentException')->duringSetStars(8);
     }
 
-    function it_can_be_marked_as_listened()
+    function it_can_be_marked_as_played()
     {
-        $this->listen();
-        $this->shouldBeWatched();
+        $this->play();
+        $this->shouldBePlayed();
     }
 
     function it_can_fetch_the_name_of_the_song()

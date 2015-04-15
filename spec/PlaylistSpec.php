@@ -25,12 +25,12 @@ class PlaylistSpec extends ObjectBehavior
         $this->shouldHaveCount(2);
     }
 
-    function it_can_mark_all_songs_as_listened(Song $song1, Song $song2)
+    function it_can_mark_all_songs_as_played(Song $song1, Song $song2)
     {
-        $song1->listen()->shouldBeCalled();
-        $song2->listen()->shouldBeCalled();
+        $song1->play()->shouldBeCalled();
+        $song2->play()->shouldBeCalled();
 
         $this->add([$song1, $song2]);
-        $this->markAllAsListened();
+        $this->markAllAsPlayed();
     }
 }

@@ -154,13 +154,13 @@ t run
 [edit] `spec/PlaylistSpec.php`
 
 ```php
-    function it_can_mark_all_songs_as_listened(Song $song1, Song $song2)
+    function it_can_mark_all_songs_as_played(Song $song1, Song $song2)
     {
-        $song1->listen()->shouldBeCalled();
-        $song2->listen()->shouldBeCalled();
+        $song1->play()->shouldBeCalled();
+        $song2->play()->shouldBeCalled();
 
         $this->add([$song1, $song2]);
-        $this->markAllAsListened();
+        $this->markAllAsPlayed();
     }
 ```
 
@@ -169,13 +169,13 @@ t run
 ```
 
 ```
-method `Double\KK\Song\P4::listen()` is not defined.
+method `Double\KK\Song\P4::play()` is not defined.
 ```
 
 [edit] `src/Song.php`
 
 ```php
-    public function listen()
+    public function play()
     {
     }
 ```
@@ -185,16 +185,16 @@ t run
 ```
 
 ```
-Do you want me to create `KK\Playlist::markAllAsListened()` for you? (y)
+Do you want me to create `KK\Playlist::markAllAsPlayed()` for you? (y)
 ```
 
 [edit] `src/Playlist.php`
 
 ```php
-    public function markAllAsListened()
+    public function markAllAsPlayed()
     {
         foreach ($this->songs as $song) {
-            $song->listen();
+            $song->play();
         }
     }
 ```
@@ -249,7 +249,7 @@ class Song
         return $this->stars;
     }
 
-    public function listen()
+    public function play()
     {
     }
 }
@@ -303,15 +303,15 @@ t run
     }
 ```
 
-## Spec of Song::listen()
+## Spec of Song::play()
 
 [edit] `spec/SongSpec.php`
 
 ```php
-    function it_can_be_marked_as_listened()
+    function it_can_be_marked_as_played()
     {
-        $this->listen();
-        $this->shouldBeWatched();
+        $this->play();
+        $this->shouldBePlayed();
     }
 ```
 
@@ -320,22 +320,22 @@ t run
 ```
 
 ```
-Do you want me to create `KK\Song::isWatched()` for you?
+Do you want me to create `KK\Song::isPlayed()` for you?
 ```
 
 [edit] `src/Song.php`
 
 ```php
-    protected $listened = false;
+    protected $played = false;
 
-    public function listen()
+    public function play()
     {
-        $this->listened = true;
+        $this->played = true;
     }
 
-    public function isWatched()
+    public function isPlayed()
     {
-        return $this->listened;
+        return $this->played;
     }
 ```
 

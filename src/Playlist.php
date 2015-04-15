@@ -22,10 +22,10 @@ class Playlist implements Countable
         return count($this->songs);
     }
 
-    public function markAllAsListened()
+    public function markAllAsPlayed()
     {
         foreach ($this->songs as $song) {
-            $song->listen();
+            $song->play();
         }
     }
 }
