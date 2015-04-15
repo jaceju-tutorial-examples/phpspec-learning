@@ -344,9 +344,9 @@ Do you want me to create `KK\Song::isWatched()` for you?
 [edit] `spec/SongSpec.php`
 
 ```php
-    function it_can_fetch_the_title_of_the_song()
+    function it_can_fetch_the_name_of_the_song()
     {
-        $this->getTitle()->shouldBe('La la la');
+        $this->getName()->shouldBe('La la la');
     }
 ```
 
@@ -361,16 +361,16 @@ Do you want me to create `KK\Song::__construct()` for you? (y)
 [edit] `src/Song.php`
 
 ```php
-    protected $title;
+    protected $name;
 
-    public function __construct($title)
+    public function __construct($name)
     {
-        $this->title = $title;
+        $this->name = $name;
     }
 
-    public function getTitle()
+    public function getName()
     {
-        return $this->title;
+        return $this->name;
     }
 ```
 

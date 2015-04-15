@@ -8,11 +8,11 @@ class Song
 {
     protected $stars;
     protected $listened = false;
-    protected $title;
+    protected $name;
 
     public function __construct($title)
     {
-        $this->title = $title;
+        $this->name = $title;
     }
 
     public function setStars($stars)
@@ -44,8 +44,8 @@ class Song
         return $this->listened;
     }
 
-    public function getTitle()
+    public function getName()
     {
-        return $this->title;
+        return $this->name;
     }
 }

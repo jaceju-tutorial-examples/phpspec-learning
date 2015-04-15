@@ -29,8 +29,8 @@ class SongSpec extends ObjectBehavior
         $this->shouldBeWatched();
     }
 
-    function it_can_fetch_the_title_of_the_song()
+    function it_can_fetch_the_name_of_the_song()
     {
-        $this->getTitle()->shouldBe('La la la');
+        $this->getName()->shouldBe('La la la');
     }
 }
