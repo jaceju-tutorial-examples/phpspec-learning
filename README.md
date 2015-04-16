@@ -11,15 +11,29 @@
 
 ## 初始化專案
 
+建立一個專案資料夾
+
+```bash
+mkdir kk-music && cd $_
+```
+
+引用 `phpspec` 套件
+
 ```bash
 composer require phpspec/phpspec
 ```
+
+設定指令別名
 
 ```bash
 alias t=./vendor/bin/phpspec
 ```
 
-編輯 `phpspec.yml`
+* phpspec 會讀取專案根目錄下的 `phpspec.yml` 設定檔
+* phpspec 可以針對不同 namespace 的類別建立規格檔案
+* 可以有多組 suite
+
+新增 `phpspec.yml`
 
 ```yaml
 suites:
@@ -28,7 +42,7 @@ suites:
     psr4_prefix: KK
 ```
 
-編輯 `composer.json`
+> 編輯 `composer.json`
 
 ```json
   "autoload": {
@@ -64,23 +78,29 @@ composer dump
 
 ## 建立播放清單規格類別
 
+> 用 `desc` 來建立規格
+
 ```bash
 t desc KK/Playlist
 ```
+
+> 用 `run` 執行測試
 
 ```bash
 t run
 ```
 
+> phpspec 會詢問是否要建立對應的類別檔案
+
 ```
 Do you want me to create `KK\Playlist` for you? (y)
 ```
 
-* phpspec 會自動幫我們建立對應的檔案
+> 選 `y` 的話， phpspec 會自動幫我們建立對應的檔案
 
 ### 規格一：可以加入單首歌曲
 
-編輯 `spec/PlaylistSpec.php`
+> 編輯 `spec/PlaylistSpec.php`
 
 ```php
 use KK\Song;
@@ -92,8 +112,9 @@ use KK\Song;
     }
 ```
 
-* 用 Double 來隔離 `Song` 類別，因為我們還沒實作
-* phpspec 會自動注入 Double 物件
+> 用 Double 來隔離 `Song` 類別，因為我們還沒實作
+>
+> phpspec 會自動注入 Double 物件
 
 ```bash
 t run
@@ -105,7 +126,7 @@ Class spec\KK\Song does not exist
 
 * phpspec 無法自動生成 Double 物件的類別
 
-編輯 `src/Song.php`
+> 編輯 `src/Song.php`
 
 ```php
 namespace KK;
@@ -131,7 +152,7 @@ Do you want me to create `KK\Playlist::hasCount()` for you? (n)
 
 * `Playlist` 類別要實作 `Countable` 介面，所以不新增 `hasCount` 方法
 
-編輯 `src/Playlist.php`
+> 編輯 `src/Playlist.php`
 
 ```php
 namespace KK;
@@ -162,7 +183,7 @@ t run
 
 ### 規格二：可以一次加入多首歌曲
 
-編輯 `spec/PlaylistSpec.php`
+> 編輯 `spec/PlaylistSpec.php`
 
 ```php
     function it_can_accept_multiple_songs_to_add_at_once(Song $song1, Song $song2)
@@ -176,7 +197,7 @@ t run
 t run
 ```
 
-編輯 `src/Playlist.php`
+> 編輯 `src/Playlist.php`
 
 ```php
     public function add($song)
@@ -197,7 +218,7 @@ t run
 
 ## 引入 Mock 物件
 
-編輯 `spec/PlaylistSpec.php`
+> 編輯 `spec/PlaylistSpec.php`
 
 ```php
     function it_can_mark_all_songs_as_played(Song $song1, Song $song2)
@@ -222,7 +243,7 @@ method `Double\KK\Song\P4::play()` is not defined.
 
 * phpspec 無法自動建立 Mock 物件的方法
 
-編輯 `src/Song.php`
+> 編輯 `src/Song.php`
 
 ```php
     public function play()
@@ -240,7 +261,7 @@ Do you want me to create `KK\Playlist::markAllAsPlayed()` for you? (y)
 
 * Mock 物件沒有錯誤提示後， phpspec 就會繼續原來的自動建立測試對象方法的流程
 
-編輯 `src/Playlist.php`
+> 編輯 `src/Playlist.php`
 
 ```php
     public function markAllAsPlayed()
@@ -257,15 +278,16 @@ t run
 
 ## 建立歌曲規格類別
 
+* 用 `desc` 來建立規格
+* 因為 `Song` 類別先前已經建立， phpspec 就不會再問
+
 ```
 t desc KK/Song
 ```
 
-* 因為 `Song` 類別已經建立， phpspec 就不會問了
-
 ### 規格一：可以加星
 
-編輯 `spec/SongSpec.php`
+> 編輯 `spec/SongSpec.php`
 
 ```php
     function it_can_be_stared()
@@ -287,7 +309,7 @@ Do you want me to create `KK\Song::setStars()` for you? (y)
 Do you want me to create `KK\Song::getStars()` for you? (y)
 ```
 
-編輯 `src/Song.php`
+> 編輯 `src/Song.php`
 
 ```php
 
@@ -315,7 +337,7 @@ class Song
 
 ### 規格二：不可加超過 5 的星
 
-編輯 `spec/SongSpec.php`
+> 編輯 `spec/SongSpec.php`
 
 ```
     function its_stars_should_be_not_exceed_five()
@@ -330,7 +352,7 @@ class Song
 t run
 ```
 
-編輯 `src/Song.php`
+> 編輯 `src/Song.php`
 
 ```php
     public function setStars($stars)
@@ -349,7 +371,7 @@ t run
 
 ### 重構
 
-編輯 `src/Song.php`
+> 編輯 `src/Song.php`
 
 ```php
     public function setStars($stars)
@@ -375,7 +397,7 @@ t run
 
 ## 規格三：可以被設定為已播放
 
-編輯 `spec/SongSpec.php`
+> 編輯 `spec/SongSpec.php`
 
 ```php
     function it_can_be_marked_as_played()
@@ -393,7 +415,7 @@ t run
 Do you want me to create `KK\Song::isPlayed()` for you?
 ```
 
-編輯 `src/Song.php`
+> 編輯 `src/Song.php`
 
 ```php
     protected $played = false;
@@ -411,7 +433,7 @@ Do you want me to create `KK\Song::isPlayed()` for you?
 
 ## 規格四：可以取得歌曲名稱
 
-編輯 `spec/SongSpec.php`
+> 編輯 `spec/SongSpec.php`
 
 ```php
     function it_can_fetch_the_name_of_the_song()
@@ -430,7 +452,7 @@ t run
 Do you want me to create `KK\Song::__construct()` for you? (y)
 ```
 
-編輯 `src/Song.php`
+> 編輯 `src/Song.php`
 
 ```php
     protected $name;
@@ -450,7 +472,7 @@ Do you want me to create `KK\Song::__construct()` for you? (y)
 t run
 ```
 
-編輯 `spec/SongSpec.php`
+> 編輯 `spec/SongSpec.php`
 
 ```
     function let()
