@@ -1,8 +1,13 @@
-# PhpSpec Learning
+# phpspec Learning
 
-* 如何開發 Composer-based library ？
+* 如何開發 composer-based library ？
 * 如何從預期的結果往回推出程式碼？
 * 如何用更語義化的方式撰寫測試？
+
+[phpspec](http://www.phpspec.net/en/latest/)
+
+* SpecBDD 型測試框架 ([Behat](http://behat.org) 為 StoryBDD 型的測試框架)
+* 先寫出 specification 再完成程式碼
 
 ## 初始化專案
 
@@ -71,7 +76,7 @@ t run
 Do you want me to create `KK\Playlist` for you? (y)
 ```
 
-* PhpSpec 會自動幫我們建立對應的檔案
+* phpspec 會自動幫我們建立對應的檔案
 
 ### 規格一：可以加入單首歌曲
 
@@ -88,7 +93,7 @@ use KK\Song;
 ```
 
 * 用 Double 來隔離 `Song` 類別，因為我們還沒實作
-* PhpSpec 會自動注入 Double 物件
+* phpspec 會自動注入 Double 物件
 
 ```bash
 t run
@@ -98,7 +103,7 @@ t run
 Class spec\KK\Song does not exist
 ```
 
-* PhpSpec 無法自動生成 Double 物件的類別
+* phpspec 無法自動生成 Double 物件的類別
 
 編輯 `src/Song.php`
 
@@ -118,7 +123,7 @@ t run
 Do you want me to create `KK\Playlist::add()` for you? (y)
 ```
 
-* PhpSpec 會自動幫我們建立對應的方法
+* phpspec 會自動幫我們建立對應的方法
 
 ```
 Do you want me to create `KK\Playlist::hasCount()` for you? (n)
@@ -215,7 +220,7 @@ t run
 method `Double\KK\Song\P4::play()` is not defined.
 ```
 
-* PhpSpec 無法自動建立 Mock 物件的方法
+* phpspec 無法自動建立 Mock 物件的方法
 
 編輯 `src/Song.php`
 
@@ -233,7 +238,7 @@ t run
 Do you want me to create `KK\Playlist::markAllAsPlayed()` for you? (y)
 ```
 
-* Mock 物件沒有錯誤提示後， PhpSpec 就會繼續原來的自動建立測試對象方法的流程
+* Mock 物件沒有錯誤提示後， phpspec 就會繼續原來的自動建立測試對象方法的流程
 
 編輯 `src/Playlist.php`
 
@@ -256,7 +261,7 @@ t run
 t desc KK/Song
 ```
 
-* 因為 `Song` 類別已經建立， PhpSpec 就不會問了
+* 因為 `Song` 類別已經建立， phpspec 就不會問了
 
 ### 規格一：可以加星
 
